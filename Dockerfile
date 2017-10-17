@@ -5,6 +5,10 @@ FROM registry.access.redhat.com/rhel7
 MAINTAINER Dan Hawker <dhawker@redhat.com>
 
 RUN rpm -ivh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+# Need to enable the RHEL extras subs
+RUN yum repolist --disablerepo=* && \
+    yum-config-manager --disable \* > /dev/null && \
+    yum-config-manager --enable rhel-7-server-rpms rhel-7-server-extras-rpms rhel-7-server-optional-rpms> /dev/null
 
 RUN yum install -y redhat-rpm-config \
     make automake autoconf gcc gcc-c++ \
