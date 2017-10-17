@@ -4,8 +4,8 @@ FROM registry.access.redhat.com/rhel7
 
 MAINTAINER Dan Hawker <dhawker@redhat.com>
 
-RUN yum install -y epel-release && \
-    yum clean all
+RUN rpm -ivh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+
 RUN yum install -y redhat-rpm-config \
     make automake autoconf gcc gcc-c++ \
     libstdc++ libstdc++-devel \
