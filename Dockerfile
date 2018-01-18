@@ -61,4 +61,5 @@ RUN chown root:root /zap -R && \
 WORKDIR /var/lib/jenkins
 
 # Run the Jenkins JNLP client
-ENTRYPOINT ["/usr/local/bin/run-jnlp-client"]
+#ENTRYPOINT ["/usr/local/bin/run-jnlp-client"]
+ENTRYPOINT ["/zap/zap.sh -daemon -host 0.0.0.0 -port 8080"]
