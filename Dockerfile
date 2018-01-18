@@ -65,5 +65,5 @@ RUN pwd && ls -la
 
 # Run the Jenkins JNLP client
 #ENTRYPOINT ["/usr/local/bin/run-jnlp-client"]
-ENTRYPOINT ["./zap.sh"]
+ENTRYPOINT ["/zap/zap.sh"]
 CMD ["-dir", "/zap/.ZAP", "-daemon", "-host", "0.0.0.0", "-port", "8080"]
