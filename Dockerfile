@@ -60,7 +60,8 @@ RUN chown root:root /zap -R && \
     chmod 777 /zap -R
 
 #WORKDIR /var/lib/jenkins
-
+WORKDIR /zap
+RUN pwd && ls -la
 
 # Run the Jenkins JNLP client
 #ENTRYPOINT ["/usr/local/bin/run-jnlp-client"]
