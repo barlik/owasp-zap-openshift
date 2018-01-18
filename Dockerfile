@@ -26,25 +26,26 @@ RUN pip install zapcli
 # Install latest dev version of the python API
 RUN pip install python-owasp-zap-v2.4
 
-RUN mkdir -p /zap/wrk
+RUN mkdir -p /zap/wrk && mkdir -p /zap/.ZAP
 ADD zap /zap/
 
-RUN mkdir -p /var/lib/jenkins/.vnc
+#RUN mkdir -p /var/lib/jenkins/.vnc
 
 # Copy the entrypoint
-COPY configuration/* /var/lib/jenkins/
-COPY configuration/run-jnlp-client /usr/local/bin/run-jnlp-client
+#COPY configuration/* /var/lib/jenkins/
+#COPY configuration/run-jnlp-client /usr/local/bin/run-jnlp-client
 
 ENV JAVA_HOME /usr/lib/jvm/java-8-openjdk-amd64/
 ENV PATH $JAVA_HOME/bin:/zap:$PATH
 ENV ZAP_PATH /zap/zap.sh
-ENV HOME /var/lib/jenkins
+#ENV HOME /var/lib/jenkins
 
 # Default port for use with zapcli
 ENV ZAP_PORT 8080
 
-COPY policies /var/lib/jenkins/.ZAP/policies/
-COPY .xinitrc /var/lib/jenkins/
+#COPY policies /var/lib/jenkins/.ZAP/policies/
+COPY policies /zap/.ZAP/policies/
+#COPY .xinitrc /var/lib/jenkins/
 
 WORKDIR /zap
 # Download and expand the latest stable release
@@ -54,13 +55,14 @@ RUN curl -s https://raw.githubusercontent.com/zaproxy/zap-admin/master/ZapVersio
 ADD webswing.config /zap/webswing-2.3/webswing.config
 
 RUN chown root:root /zap -R && \
-    chown root:root -R /var/lib/jenkins && \
-    chmod 777 /var/lib/jenkins -R && \
+#    chown root:root -R /var/lib/jenkins && \
+#    chmod 777 /var/lib/jenkins -R && \
     chmod 777 /zap -R
 
-WORKDIR /var/lib/jenkins
+#WORKDIR /var/lib/jenkins
+
 
 # Run the Jenkins JNLP client
 #ENTRYPOINT ["/usr/local/bin/run-jnlp-client"]
-ENTRYPOINT ["/zap/zap.sh"]
-CMD ["-daemon", "-host", "0.0.0.0", "-port", "8080"]
+ENTRYPOINT ["./zap.sh"]
+CMD ["-dir", "/zap/.ZAP", "-daemon", "-host", "0.0.0.0", "-port", "8080"]
