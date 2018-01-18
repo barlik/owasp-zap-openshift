@@ -62,4 +62,5 @@ WORKDIR /var/lib/jenkins
 
 # Run the Jenkins JNLP client
 #ENTRYPOINT ["/usr/local/bin/run-jnlp-client"]
-ENTRYPOINT ["zap.sh -daemon -host 0.0.0.0 -port 8080"]
+ENTRYPOINT ["/zap/zap.sh"]
+CMD ["-daemon", "-host", "0.0.0.0", "-port", "8080"]
