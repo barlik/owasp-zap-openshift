@@ -8,6 +8,11 @@ stage('Initial setup') {
                 description: 'Target url',
                 defaultValue: 'http://juice-shop:80'
             ),
+            string(
+                name: 'MINUTES',
+                description: 'The number of minutes to spider for',
+                defaultValue: '1'
+            ),
         ])
     ])
 }
@@ -15,20 +20,21 @@ stage('Initial setup') {
 stage('Scan Web Application') {
     node('zap') {
     container('zap') {
-        sh 'mkdir /tmp/workdir'
-            dir('/tmp/workdir') {
-                def retVal = sh(returnStatus: true, script: "/zap/zap-baseline.py -r baseline.html -t $TARGET")
-                    publishHTML([
-                            allowMissing: false,
-                            alwaysLinkToLastBuild: false,
-                            keepAll: true,
-                            reportDir: '/zap/wrk',
-                            reportFiles: 'baseline.html',
-                            reportName: 'ZAP Baseline Scan',
-                            reportTitles: 'ZAP Baseline Scan'
-                    ])
-                    echo "Return value is: ${retVal}"
-            }
+        def tempDir = sh(returnStatus: true, script: "mktemp -d")
+        dir(tempDir) {
+            def retVal = sh(returnStatus: true, script: "/zap/zap-baseline.py -m $MINUTES -r baseline.html -t $TARGET")
+            publishHTML([
+                    allowMissing: false,
+                    alwaysLinkToLastBuild: false,
+                    keepAll: true,
+                    reportDir: '/zap/wrk',
+                    reportFiles: 'baseline.html',
+                    reportName: 'ZAP Baseline Scan',
+                    reportTitles: 'ZAP Baseline Scan'
+            ])
+            echo "Return value is: ${retVal}"
+        }
+        sh "rm -rf $tempDir"
     }
     }
 }
