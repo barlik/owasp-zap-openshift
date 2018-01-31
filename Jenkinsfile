@@ -1,4 +1,9 @@
 #!groovy
+def reportDir = "/zap/wrk"
+def reportFile = "baseline.html"
+
+// shared between both containers
+def workspaceDir = "/tmp/workspace"
 
 stage('Initial setup') {
     properties([
@@ -17,25 +22,34 @@ stage('Initial setup') {
     ])
 }
 
+stage('Clean Workspace') {
+    node('zap') {
+        sh "rm -rf $workspaceDir || true"
+        sh "mkdir -p $workspaceDir"
+    }
+}
+
 stage('Scan Web Application') {
     node('zap') {
     container('zap') {
         def tempDir = sh(returnStdout: true, script: "mktemp -d")
         dir(tempDir) {
-            def retVal = sh(returnStatus: true, script: "/zap/zap-baseline.py -m $MINUTES -r baseline.html -t $TARGET")
-            publishHTML([
-                    allowMissing: false,
-                    alwaysLinkToLastBuild: false,
-                    keepAll: true,
-                    reportDir: '/zap/wrk',
-                    reportFiles: 'baseline.html',
-                    reportName: 'ZAP Baseline Scan',
-                    reportTitles: 'ZAP Baseline Scan'
-            ])
+            def retVal = sh(returnStatus: true, script: "/zap/zap-baseline.py -m $MINUTES -r $reportFile -t $TARGET")
             echo "Return value is: ${retVal}"
+
+            // Share the report
+            sh "cp $reportDir/$reportFile $workspaceDir"
         }
-        sh "rm -rf $tempDir"
     }
+    publishHTML([
+            allowMissing: false,
+            alwaysLinkToLastBuild: false,
+            keepAll: true,
+            reportDir: workspaceDir,
+            reportFiles: reportFile,
+            reportName: 'ZAP Baseline Scan',
+            reportTitles: 'ZAP Baseline Scan'
+    ])
     }
 }
 
