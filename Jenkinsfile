@@ -20,7 +20,7 @@ stage('Initial setup') {
 stage('Scan Web Application') {
     node('zap') {
     container('zap') {
-        def tempDir = sh(returnStatus: true, script: "mktemp -d")
+        def tempDir = sh(returnStdout: true, script: "mktemp -d")
         dir(tempDir) {
             def retVal = sh(returnStatus: true, script: "/zap/zap-baseline.py -m $MINUTES -r baseline.html -t $TARGET")
             publishHTML([
