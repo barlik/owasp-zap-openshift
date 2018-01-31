@@ -5,7 +5,8 @@ stage('Initial setup') {
         parameters([
             string(
                 name: 'TARGET',
-                description: 'Target url'
+                description: 'Target url',
+                defaultValue: 'http://juice-shop:80'
             ),
         ])
     ])
