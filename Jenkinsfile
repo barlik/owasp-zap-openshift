@@ -3,7 +3,7 @@ def reportDir = "/zap/wrk"
 def reportFile = "baseline.html"
 
 // shared between both containers
-def workspaceDir = "/tmp/workspace"
+def workspaceDir = "/tmp/wrk"
 
 stage('Initial setup') {
     properties([
@@ -41,15 +41,17 @@ stage('Scan Web Application') {
             sh "cp $reportDir/$reportFile $workspaceDir"
         }
     }
-    publishHTML([
-            allowMissing: false,
-            alwaysLinkToLastBuild: false,
-            keepAll: true,
-            reportDir: workspaceDir,
-            reportFiles: reportFile,
-            reportName: 'ZAP Baseline Scan',
-            reportTitles: 'ZAP Baseline Scan'
-    ])
+    container('jnlp') {
+        publishHTML([
+                allowMissing: false,
+                alwaysLinkToLastBuild: false,
+                keepAll: true,
+                reportDir: workspaceDir,
+                reportFiles: reportFile,
+                reportName: 'ZAP Baseline Scan',
+                reportTitles: 'ZAP Baseline Scan'
+        ])
+        }
     }
 }
 
