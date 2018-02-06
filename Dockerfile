@@ -8,9 +8,12 @@ RUN rpm -ivh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.
 # Need to enable the RHEL extras subs
 RUN yum-config-manager --enable rhel-7-server-rpms rhel-7-server-extras-rpms rhel-7-server-optional-rpms epel > /dev/null
 
-RUN yum install --enablerepo=rhel-7-server-rpms --enablerepo=rhel-7-server-extras-rpms \
-    --enablerepo=rhel-7-server-optional-rpms --enablerepo=epel \
-    -y redhat-rpm-config \
+RUN yum install -y \
+    --enablerepo=rhel-7-server-rpms \
+    --enablerepo=rhel-7-server-extras-rpms \
+    --enablerepo=rhel-7-server-optional-rpms \
+    --enablerepo=epel \
+    redhat-rpm-config \
     make automake autoconf gcc gcc-c++ \
     libstdc++ libstdc++-devel \
     java-1.8.0-openjdk wget curl \
@@ -18,7 +21,7 @@ RUN yum install --enablerepo=rhel-7-server-rpms --enablerepo=rhel-7-server-extra
     xorg-x11-server-Xvfb openbox xterm \
     net-tools python-pip \
     firefox nss_wrapper java-1.8.0-openjdk-headless \
-    java-1.8.0-openjdk-devel nss_wrapper git && \
+    java-1.8.0-openjdk-devel nss_wrapper && \
     yum clean all
 
 RUN pip install --upgrade pip
