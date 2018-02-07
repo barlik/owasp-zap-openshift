@@ -69,5 +69,5 @@ WORKDIR /zap
 EXPOSE 8080
 
 # Run the Jenkins JNLP client
-ENTRYPOINT ["/zap/zap.sh", "-dir", "/zap/.ZAP", "-daemon", "-host", "0.0.0.0", "-port", "8080", "-config", "api.disablekey=true", "-config", "api.addrs.addr.name=.*", "-config", "api.addrs.addr.regex=true"]
+ENTRYPOINT ["/zap/zap.sh", "-dir", "/zap/.ZAP", "-daemon", "-host", "0.0.0.0", "-port", "8080", "-config", "api.disablekey=true", "-config", "api.addrs.addr.name=.*", "-config", "api.addrs.addr.regex=true", "-config", "api.addrs.addr.enabled=true"]
 #CMD ["-dir", "/zap/.ZAP", "-daemon", "-host", "0.0.0.0", "-port", "8080"]
