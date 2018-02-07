@@ -26,7 +26,8 @@ RUN yum install -y \
     xorg-x11-server-Xvfb openbox xterm \
     net-tools python-pip \
     firefox nss_wrapper java-1.8.0-openjdk-headless \
-    java-1.8.0-openjdk-devel nss_wrapper && \
+    java-1.8.0-openjdk-devel nss_wrapper \
+    nginx && \
     yum clean all
 
 RUN pip install --upgrade pip
@@ -67,9 +68,6 @@ RUN chown root:root /zap -R && \
 WORKDIR /zap
 
 EXPOSE 8080
-
-# HACK
-RUN chmod 777 /etc/hosts
 
 # Run the Jenkins JNLP client
 ENTRYPOINT ["/zap/zap.sh", "-dir", "/zap/.ZAP", "-daemon", "-host", "0.0.0.0", "-port", "8080", "-config", "api.disablekey=true", "-config", "api.addrs.addr.name=.*", "-config", "api.addrs.addr.regex=true", "-config", "api.addrs.addr.enabled=true", "-config", "api.enabled=true", "-config", "api.uienabled=true", "-config", "proxy.behindnat=true"]
