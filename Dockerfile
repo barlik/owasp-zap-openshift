@@ -30,6 +30,7 @@ RUN yum install -y \
     nginx && \
     yum clean all
 
+
 RUN pip install --upgrade pip
 RUN pip install zapcli
 # Install latest dev version of the python API
