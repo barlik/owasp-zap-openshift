@@ -85,6 +85,8 @@ EXPOSE 8081
 #RUN chmod -R 777 /etc/nginx
 #####################################
 
+RUN yum install -y tcpdump
+
 # Run the Jenkins JNLP client
 ENTRYPOINT ["/zap/zap.sh", "-dir", "/zap/.ZAP", "-daemon", "-host", "0.0.0.0", "-port", "8080", "-config", "api.disablekey=true", "-config", "api.addrs.addr.name=.*", "-config", "api.addrs.addr.regex=true", "-config", "api.addrs.addr.enabled=true", "-config", "api.enabled=true", "-config", "api.uienabled=true", "-config", "proxy.behindnat=true"]
 #CMD ["-dir", "/zap/.ZAP", "-daemon", "-host", "0.0.0.0", "-port", "8080"]
