@@ -73,8 +73,8 @@ EXPOSE 8080
 # NGINX
 # ####################
 # support running as arbitrary user which belogs to the root group
-RUN chmod g+rwx /var/run /var/log/nginx /etc/nginx
-RUN chmod -R g+rwx /var/lib/nginx
+RUN chmod g+rwx /var/run
+RUN chmod -R g+rwx /var/lib/nginx /etc/nginx /var/log/nginx
 RUN chown -R :root /var/run /var/log/nginx /var/lib/nginx /etc/nginx
 
 # users are not allowed to listen on priviliged ports
